@@ -1,12 +1,12 @@
 
-insert into `user` (`name`, `email`, `password`, `role`) values
-('admin','admin@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW', 'ADMIN'),
-('user1', 'user1@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW', 'CUSTOMER'),
-('user2', 'user2@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW', 'CUSTOMER'),
-('user3', 'user3@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW', 'CUSTOMER');
+insert into `user` (`name`, `email`, `password`) values
+('admin','admin@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW'),
+('user1', 'user1@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW'),
+('user2', 'user2@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW'),
+('user3', 'user3@g.com', '$2a$12$BzcrGYG77xPP4EtfdV1WtOCb67RtnTAvUmSPyOuB74ADsUeRsIlGW');
 
 insert into `vacancy`
-(`name_company`, `position`,`salary`, `link_to_vacancy`,`recruiters_contacts`,`status_vacancy`,`last_change`,`history`,`notes`,`user_id`)  values
+(`name_company`, `position`,`expected_salary`, `link_to_vacancy`,`recruiters_contacts`,`status_vacancy`,`last_change`,`history`,`notes`,`user_id`)  values
 
 ('nameCompany1', 'Junior Java Developer', 500, 'linkToVacancy1', 'recruiters1@gmail.com','SUBMITTED','2021-01-20', '2021-01-20 SUBMITTED', 'notes',2),
 ('nameCompany2', 'Trainee Java Developer', 600, 'linkToVacancy2', 'recruiters2@gmail.com','GAVE_TEST','2021-01-21', '2021-01-20 SUBMITTED', 'notes',2),
