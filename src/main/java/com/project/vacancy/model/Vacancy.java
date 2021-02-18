@@ -21,8 +21,6 @@ public class Vacancy extends BaseEntity{
     private String linkToVacancy;
     private String recruitersContacts;
     private LocalDate lastChange;
-    private String history;
-    private String notes;
 
     @Enumerated(value = EnumType.STRING)
     private StatusVacancy statusVacancy;
