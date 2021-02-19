@@ -1,8 +1,7 @@
-package com.project.vacancy.security;
+package com.project.vacancy.config.security;
 
 import com.project.vacancy.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,12 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.project.vacancy.security.SecurityConstants.SIGN_UP_URL;
+import static com.project.vacancy.config.security.SecurityConstants.SIGN_UP_URL;
 
 @Configuration
 @AllArgsConstructor

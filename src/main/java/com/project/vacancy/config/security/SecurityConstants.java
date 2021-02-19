@@ -1,4 +1,4 @@
-package com.project.vacancy.security;
+package com.project.vacancy.config.security;
 
 public class SecurityConstants {
     public static final String SECRET = "SecretKeyToGenJWTs";

@@ -1,4 +1,4 @@
-package com.project.vacancy.security;
+package com.project.vacancy.config.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-import static com.project.vacancy.security.SecurityConstants.*;
+import static com.project.vacancy.config.security.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
