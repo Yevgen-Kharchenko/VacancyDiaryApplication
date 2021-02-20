@@ -9,8 +9,4 @@ public class EntityNotExistRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public EntityNotExistRuntimeException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
 }

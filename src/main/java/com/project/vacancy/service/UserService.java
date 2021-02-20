@@ -4,7 +4,9 @@ import com.project.vacancy.exeption.ActionWithUserRuntimeException;
 import com.project.vacancy.exeption.InvalidDataRuntimeException;
 import com.project.vacancy.exeption.UserNotFoundException;
 import com.project.vacancy.model.ApplicationUser;
+import com.project.vacancy.model.Vacancy;
 import com.project.vacancy.repositiry.ApplicationUserRepository;
+import com.project.vacancy.repositiry.VacancyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ public class UserService {
 
     private final ApplicationUserRepository applicationUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final VacancyRepository vacancyRepository;
 
     public List<ApplicationUser> getAllUsers() {
         return applicationUserRepository.findAll();
@@ -91,7 +94,13 @@ public class UserService {
     }
 
     public void deleteUser() throws UserNotFoundException {
-        long id = findCurrentUser().getId();
-        applicationUserRepository.deleteById(id);
+        ApplicationUser deletedUser = findCurrentUser();
+        List<Vacancy> usersVacancies = vacancyRepository.findAllByUser(deletedUser);
+        if (!usersVacancies.isEmpty()) {
+            for (Vacancy vacancy : usersVacancies) {
+                vacancyRepository.delete(vacancy);
+            }
+        }
+        applicationUserRepository.delete(deletedUser);
     }
 }

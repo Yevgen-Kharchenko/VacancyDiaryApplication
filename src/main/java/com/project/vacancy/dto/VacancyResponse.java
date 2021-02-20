@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class VacancyResponse {
 
+    private long id;
     private String nameCompany;
     private String position;
     private Integer expectedSalary;

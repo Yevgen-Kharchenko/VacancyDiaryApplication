@@ -10,4 +10,5 @@ import java.util.List;
 public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     List<Vacancy> findAllByUser(ApplicationUser currentUser, Pageable pageable);
+    List<Vacancy> findAllByUser(ApplicationUser currentUser);
 }

@@ -31,4 +31,18 @@ public class VacancyController {
         vacancyService.createNewVacancy(vacancyRequest);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    public  ResponseEntity<String> updateVacancy(@RequestBody VacancyRequest vacancyRequest){
+        log.info("Update vacancy");
+        vacancyService.updateVacancy(vacancyRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) throws UserNotFoundException {
+        log.info("delete vacancy");
+        vacancyService.deleteVacancy(id);
+        return ResponseEntity.ok().build();
+    }
 }

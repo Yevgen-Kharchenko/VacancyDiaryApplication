@@ -2,19 +2,19 @@ package com.project.vacancy.service;
 
 import com.project.vacancy.dto.VacancyRequest;
 import com.project.vacancy.dto.VacancyResponse;
+import com.project.vacancy.exeption.EntityNotExistRuntimeException;
 import com.project.vacancy.exeption.UserNotFoundException;
 import com.project.vacancy.model.ApplicationUser;
 import com.project.vacancy.model.Vacancy;
 import com.project.vacancy.repositiry.VacancyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +42,24 @@ public class VacancyService {
         newVacancy.setLastChange(LocalDate.now());
         newVacancy.setUser(userService.findCurrentUser());
         vacancyRepository.save(newVacancy);
+    }
+
+    public void updateVacancy(VacancyRequest vacancyRequest) {
+        Vacancy oldVacancy = vacancyRepository.findById(vacancyRequest.getId())
+                .orElseThrow(() -> new EntityNotExistRuntimeException("Vacancy not found"));
+        Vacancy updatedVacancy = modelMapper.map(vacancyRequest, Vacancy.class);
+        updatedVacancy.setUser(oldVacancy.getUser());
+        if (!oldVacancy.getStatusVacancy().equals(updatedVacancy.getStatusVacancy())) {
+            updatedVacancy.setLastChange(LocalDate.now());
+        }
+        vacancyRepository.save(updatedVacancy);
+    }
+
+    public void deleteVacancy(long id) throws UserNotFoundException {
+        ApplicationUser currentUser=userService.findCurrentUser();
+        Vacancy vacancy=vacancyRepository.findById(id)
+                .orElseThrow(()->new EntityNotExistRuntimeException("Vacancy not found"));
+        if(vacancy.getUser().equals(currentUser))
+        vacancyRepository.deleteById(id);
     }
 }
