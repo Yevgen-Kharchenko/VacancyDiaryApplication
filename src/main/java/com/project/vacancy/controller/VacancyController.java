@@ -4,7 +4,7 @@ import com.project.vacancy.dto.VacancyRequest;
 import com.project.vacancy.dto.VacancyResponse;
 import com.project.vacancy.exeption.UserNotFoundException;
 import com.project.vacancy.model.enums.StatusVacancy;
-import com.project.vacancy.service.VacancyService;
+import com.project.vacancy.service.VacancyServer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/vacancy")
 public class VacancyController {
 
-    private final VacancyService vacancyService;
+    private final VacancyServer vacancyService;
 
     @GetMapping()
     public List<VacancyResponse> findUsersVacancies(@RequestParam("page") int currentPage) throws UserNotFoundException {
@@ -57,5 +57,13 @@ public class VacancyController {
     public List<VacancyResponse> findUsersVacanciesByNameCompany(@PathVariable String nameCompany,@RequestParam("page") int currentPage) throws UserNotFoundException {
         log.info("Find vacancies by nameCompany");
         return vacancyService.findUsersVacanciesByNameCompany(nameCompany,currentPage);
+    }
+
+    @PostMapping("/send_email")
+    public ResponseEntity<String> sendMails() throws UserNotFoundException {
+        log.info("Sending email");
+        vacancyService.sendEmail();
+        return ResponseEntity.ok().build();
+
     }
 }

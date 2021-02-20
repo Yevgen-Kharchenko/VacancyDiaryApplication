@@ -1,4 +1,4 @@
-package com.project.vacancy.service;
+package com.project.vacancy.service.impl;
 
 import com.project.vacancy.model.ApplicationUser;
 import com.project.vacancy.repositiry.ApplicationUserRepository;

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
@@ -19,4 +20,7 @@ public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
     @Query("select vacancy from Vacancy vacancy where vacancy.user= :currentUser and vacancy.nameCompany=:nameCompany")
     List<Vacancy> findAllByUserAndNameCompany(String nameCompany, ApplicationUser currentUser, Pageable pageable);
+
+    @Query("select vacancy from Vacancy vacancy where vacancy.user= :currentUser and vacancy.lastChange<:verificationDate and vacancy.statusVacancy='WAITING_FEEDBACK'")
+    List<Vacancy> findAllForEmailSending(ApplicationUser currentUser, LocalDate verificationDate);
 }

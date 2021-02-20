@@ -1,6 +1,6 @@
 package com.project.vacancy.config.security;
 
-import com.project.vacancy.service.UserDetailsServiceImpl;
+import com.project.vacancy.service.impl.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
