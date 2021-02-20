@@ -7,7 +7,7 @@ import com.project.vacancy.model.enums.StatusVacancy;
 
 import java.util.List;
 
-public interface VacancyServer {
+public interface VacancyService {
     List<VacancyResponse> findUsersVacancies(int currentPage) throws UserNotFoundException;
 
     void createNewVacancy(VacancyRequest vacancyRequest) throws UserNotFoundException;

@@ -9,7 +9,7 @@ import com.project.vacancy.model.Vacancy;
 import com.project.vacancy.model.enums.StatusVacancy;
 import com.project.vacancy.repositiry.VacancyRepository;
 import com.project.vacancy.service.UserService;
-import com.project.vacancy.service.VacancyServer;
+import com.project.vacancy.service.VacancyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class VacancyServerImpl implements VacancyServer {
+public class VacancyServiceImpl implements VacancyService {
     private final int PAGE_SIZE = 5;
     private final VacancyRepository vacancyRepository;
     private final UserService userService;

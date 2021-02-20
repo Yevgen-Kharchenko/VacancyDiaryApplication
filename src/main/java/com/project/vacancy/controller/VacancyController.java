@@ -4,7 +4,7 @@ import com.project.vacancy.dto.VacancyRequest;
 import com.project.vacancy.dto.VacancyResponse;
 import com.project.vacancy.exeption.UserNotFoundException;
 import com.project.vacancy.model.enums.StatusVacancy;
-import com.project.vacancy.service.VacancyServer;
+import com.project.vacancy.service.VacancyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/vacancy")
 public class VacancyController {
 
-    private final VacancyServer vacancyService;
+    private final VacancyService vacancyService;
 
     @GetMapping()
     public List<VacancyResponse> findUsersVacancies(@RequestParam("page") int currentPage) throws UserNotFoundException {
