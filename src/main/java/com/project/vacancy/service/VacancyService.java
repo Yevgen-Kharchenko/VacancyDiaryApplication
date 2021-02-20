@@ -6,6 +6,7 @@ import com.project.vacancy.exeption.EntityNotExistRuntimeException;
 import com.project.vacancy.exeption.UserNotFoundException;
 import com.project.vacancy.model.ApplicationUser;
 import com.project.vacancy.model.Vacancy;
+import com.project.vacancy.model.enums.StatusVacancy;
 import com.project.vacancy.repositiry.VacancyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,8 @@ public class VacancyService {
         updatedVacancy.setUser(oldVacancy.getUser());
         if (!oldVacancy.getStatusVacancy().equals(updatedVacancy.getStatusVacancy())) {
             updatedVacancy.setLastChange(LocalDate.now());
+        }else{
+            updatedVacancy.setLastChange(oldVacancy.getLastChange());
         }
         vacancyRepository.save(updatedVacancy);
     }
@@ -62,4 +65,25 @@ public class VacancyService {
         if(vacancy.getUser().equals(currentUser))
         vacancyRepository.deleteById(id);
     }
+
+    public List<VacancyResponse> findUsersVacanciesByStatus(StatusVacancy statusVacancy, int currentPage) throws UserNotFoundException {
+        ApplicationUser currentUser = userService.findCurrentUser();
+        Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
+        List<Vacancy> vacancyListByStatus = vacancyRepository.findAllByUserAndStatusVacancy(statusVacancy,currentUser, pageable);
+
+        return vacancyListByStatus.stream()
+                .map(vacancy -> modelMapper.map(vacancy, VacancyResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<VacancyResponse> findUsersVacanciesByNameCompany(String nameCompany, int currentPage) throws UserNotFoundException {
+        ApplicationUser currentUser = userService.findCurrentUser();
+        Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
+        List<Vacancy> vacancyListByNameCompany = vacancyRepository.findAllByUserAndNameCompany(nameCompany,currentUser, pageable);
+
+        return vacancyListByNameCompany.stream()
+                .map(vacancy -> modelMapper.map(vacancy, VacancyResponse.class))
+                .collect(Collectors.toList());
+    }
+
 }

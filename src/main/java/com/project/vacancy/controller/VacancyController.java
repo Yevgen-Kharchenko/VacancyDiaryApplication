@@ -3,6 +3,7 @@ package com.project.vacancy.controller;
 import com.project.vacancy.dto.VacancyRequest;
 import com.project.vacancy.dto.VacancyResponse;
 import com.project.vacancy.exeption.UserNotFoundException;
+import com.project.vacancy.model.enums.StatusVacancy;
 import com.project.vacancy.service.VacancyService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,5 +45,17 @@ public class VacancyController {
         log.info("delete vacancy");
         vacancyService.deleteVacancy(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/status/{statusVacancy}")
+    public List<VacancyResponse> findUsersVacanciesByStatus(@PathVariable StatusVacancy statusVacancy,@RequestParam("page") int currentPage) throws UserNotFoundException {
+        log.info("Find vacancies by status");
+        return vacancyService.findUsersVacanciesByStatus(statusVacancy,currentPage);
+    }
+
+    @GetMapping("/company/{nameCompany}")
+    public List<VacancyResponse> findUsersVacanciesByNameCompany(@PathVariable String nameCompany,@RequestParam("page") int currentPage) throws UserNotFoundException {
+        log.info("Find vacancies by nameCompany");
+        return vacancyService.findUsersVacanciesByNameCompany(nameCompany,currentPage);
     }
 }
