@@ -104,7 +104,7 @@ public class VacancyServiceImpl implements VacancyService {
         List<Vacancy> vacancyListByStatus = vacancyRepository.findAllForEmailSending(currentUser, verificationDate);
         for (Vacancy vacancy : vacancyListByStatus) {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("admin@g.com");
+            message.setFrom(currentUser.getEmail());
             message.setTo(vacancy.getRecruitersContacts());
             message.setSubject("I`m waiting for your feedback");
             message.setText("Hello! I applied for the "

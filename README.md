@@ -84,4 +84,5 @@
 - Запустить проект
 - С помощью приложения Postman протестировать API запросы
 - Swagger API documentation - http://localhost:8080/swagger-ui.html 
+- For authorization used path http://localhost:8080/login  and email="user1@g.com" password="admin"
 
