@@ -83,4 +83,5 @@
 - Открыть проект в IntelliJ IDEA
 - Запустить проект
 - С помощью приложения Postman протестировать API запросы
+- Swagger API documentation - http://localhost:8080/swagger-ui.html 
 
