@@ -1,24 +1,17 @@
 package com.project.vacancy.service;
 
-import com.project.vacancy.exeption.UserNotFoundException;
-import com.project.vacancy.model.ApplicationUser;
+import com.project.vacancy.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    List<ApplicationUser> getAllUsers();
+    List<User> getAllUsers();
 
-    ApplicationUser createUser(ApplicationUser applicationUser);
+    User createUser(User user);
 
-    ApplicationUser findUser(String email, String password);
+    User update(User user);
 
-    ApplicationUser findById(Long id);
+    User findCurrentUser();
 
-    void deleteById(Long id);
-
-    ApplicationUser update(ApplicationUser applicationUser) throws UserNotFoundException;
-
-    ApplicationUser findCurrentUser() throws UserNotFoundException;
-
-    void deleteUser() throws UserNotFoundException;
+    void deleteUser();
 }

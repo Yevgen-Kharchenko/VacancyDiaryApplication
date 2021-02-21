@@ -4,7 +4,7 @@ import com.project.vacancy.dto.VacancyRequest;
 import com.project.vacancy.dto.VacancyResponse;
 import com.project.vacancy.exeption.EntityNotExistRuntimeException;
 import com.project.vacancy.exeption.UserNotFoundException;
-import com.project.vacancy.model.ApplicationUser;
+import com.project.vacancy.model.User;
 import com.project.vacancy.model.Vacancy;
 import com.project.vacancy.model.enums.StatusVacancy;
 import com.project.vacancy.repositiry.VacancyRepository;
@@ -35,7 +35,7 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<VacancyResponse> findUsersVacancies(int currentPage) throws UserNotFoundException {
-        ApplicationUser currentUser = userService.findCurrentUser();
+        User currentUser = userService.findCurrentUser();
         Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
         List<Vacancy> vacancyList = vacancyRepository.findAllByUser(currentUser, pageable);
 
@@ -67,19 +67,19 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public void deleteVacancy(long id) throws UserNotFoundException {
-        ApplicationUser currentUser=userService.findCurrentUser();
-        Vacancy vacancy=vacancyRepository.findById(id)
-                .orElseThrow(()->new EntityNotExistRuntimeException("Vacancy not found"));
-        if(vacancy.getUser().equals(currentUser))
-        vacancyRepository.deleteById(id);
+    public void deleteVacancy(long id) {
+        User currentUser = userService.findCurrentUser();
+        Vacancy vacancy = vacancyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotExistRuntimeException("Vacancy not found"));
+        if (vacancy.getUser().equals(currentUser))
+            vacancyRepository.deleteById(id);
     }
 
     @Override
-    public List<VacancyResponse> findUsersVacanciesByStatus(StatusVacancy statusVacancy, int currentPage) throws UserNotFoundException {
-        ApplicationUser currentUser = userService.findCurrentUser();
+    public List<VacancyResponse> findUsersVacanciesByStatus(StatusVacancy statusVacancy, int currentPage) {
+        User currentUser = userService.findCurrentUser();
         Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
-        List<Vacancy> vacancyListByStatus = vacancyRepository.findAllByUserAndStatusVacancy(statusVacancy,currentUser, pageable);
+        List<Vacancy> vacancyListByStatus = vacancyRepository.findAllByUserAndStatusVacancy(statusVacancy, currentUser, pageable);
 
         return vacancyListByStatus.stream()
                 .map(vacancy -> modelMapper.map(vacancy, VacancyResponse.class))
@@ -87,8 +87,8 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public List<VacancyResponse> findUsersVacanciesByNameCompany(String nameCompany, int currentPage) throws UserNotFoundException {
-        ApplicationUser currentUser = userService.findCurrentUser();
+    public List<VacancyResponse> findUsersVacanciesByNameCompany(String nameCompany, int currentPage) {
+        User currentUser = userService.findCurrentUser();
         Pageable pageable = PageRequest.of(currentPage, PAGE_SIZE);
         List<Vacancy> vacancyListByNameCompany = vacancyRepository.findAllByUserAndNameCompany(nameCompany, currentUser, pageable);
 
@@ -98,8 +98,8 @@ public class VacancyServiceImpl implements VacancyService {
     }
 
     @Override
-    public void sendEmail() throws UserNotFoundException {
-        ApplicationUser currentUser = userService.findCurrentUser();
+    public void sendEmail() {
+        User currentUser = userService.findCurrentUser();
         LocalDate verificationDate = LocalDate.now().minusDays(7);
         List<Vacancy> vacancyListByStatus = vacancyRepository.findAllForEmailSending(currentUser, verificationDate);
         for (Vacancy vacancy : vacancyListByStatus) {
@@ -113,7 +113,5 @@ public class VacancyServiceImpl implements VacancyService {
                     + " I`m waiting for your feedback");
             javaMailSender.send(message);
         }
-
-
     }
 }

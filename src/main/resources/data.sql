@@ -17,4 +17,3 @@ insert into `vacancy`
 ('nameCompany1','Intern Java Developer', 1700, 'linkToVacancy8', 'recruiters8@gmail.com','NO_RESPONSE','2021-02-03', 2),
 ('nameCompany9','Middle Java Developer', 2000, 'linkToVacancy9', 'recruiters9@gmail.com','SUBMITTED', '2021-02-04',3),
 ('nameCompany10','Senior Java Developer', 5000, 'linkToVacancy10', 'recruiters10@gmail.com','WAITING_FEEDBACK', '2021-02-10',3);
-

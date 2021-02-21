@@ -1,11 +1,9 @@
 package com.project.vacancy.service.impl;
 
 import com.project.vacancy.exeption.ActionWithUserRuntimeException;
-import com.project.vacancy.exeption.InvalidDataRuntimeException;
 import com.project.vacancy.exeption.UserNotFoundException;
-import com.project.vacancy.model.ApplicationUser;
-import com.project.vacancy.model.Vacancy;
-import com.project.vacancy.repositiry.ApplicationUserRepository;
+import com.project.vacancy.model.User;
+import com.project.vacancy.repositiry.UserRepository;
 import com.project.vacancy.repositiry.VacancyRepository;
 import com.project.vacancy.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,76 +11,45 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final ApplicationUserRepository applicationUserRepository;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final VacancyRepository vacancyRepository;
 
     @Override
-    public List<ApplicationUser> getAllUsers() {
-        return applicationUserRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public ApplicationUser createUser(ApplicationUser applicationUser) {
+    public User createUser(User user) {
 
-        if (applicationUserRepository.existsByEmail(applicationUser.getEmail())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new ActionWithUserRuntimeException("User exist.");
         }
-        applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
-        return applicationUserRepository.save(applicationUser);
-    }
-
-
-    @Override
-    public ApplicationUser findUser(String email, String password) {
-        if (Objects.isNull(email) || Objects.isNull(password)) {
-            throw new InvalidDataRuntimeException("User data for finding is uncorrected");
-        }
-
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-        ApplicationUser applicationUser = applicationUserRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found! " +
-                        "Email : " + email));
-
-        if (!applicationUser.getPassword().equals(encodedPassword)) {
-            throw new ActionWithUserRuntimeException("User with this login and password is not exist");
-        }
-
-        return applicationUser;
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
-    public ApplicationUser findById(Long id) {
-        return applicationUserRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found! "));
+    public User update(User user) {
+        User updatedUser = findCurrentUser();
+        updatedUser.setName(user.getName());
+        updatedUser.setPassword(user.getPassword());
+        return userRepository.save(updatedUser);
     }
 
     @Override
-    public void deleteById(Long id) {
-        applicationUserRepository.deleteById(id);
-    }
-
-    @Override
-    public ApplicationUser update(ApplicationUser applicationUser) throws UserNotFoundException {
-        ApplicationUser updatedUser = findCurrentUser();
-        updatedUser.setName(applicationUser.getName());
-        updatedUser.setPassword(applicationUser.getPassword());
-        return applicationUserRepository.save(updatedUser);
-    }
-
-    @Override
-    public ApplicationUser findCurrentUser() throws UserNotFoundException {
+    public User findCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         log.info("Authentication auth =" + auth);
         if (null == auth) {
@@ -98,18 +65,13 @@ public class UserServiceImpl implements UserService {
             username = obj.toString();
         }
 
-        return applicationUserRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public void deleteUser() throws UserNotFoundException {
-        ApplicationUser deletedUser = findCurrentUser();
-        List<Vacancy> usersVacancies = vacancyRepository.findAllByUser(deletedUser);
-        if (!usersVacancies.isEmpty()) {
-            for (Vacancy vacancy : usersVacancies) {
-                vacancyRepository.delete(vacancy);
-            }
-        }
-        applicationUserRepository.delete(deletedUser);
+    public void deleteUser() {
+        User deletedUser = findCurrentUser();
+        vacancyRepository.deleteAll(vacancyRepository.findAllByUser(deletedUser));
+        userRepository.delete(deletedUser);
     }
 }

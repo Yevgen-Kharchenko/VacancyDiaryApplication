@@ -1,9 +1,8 @@
 package com.project.vacancy.service.impl;
 
-import com.project.vacancy.model.ApplicationUser;
-import com.project.vacancy.repositiry.ApplicationUserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import com.project.vacancy.model.User;
+import com.project.vacancy.repositiry.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +11,10 @@ import org.springframework.stereotype.Service;
 import static java.util.Collections.emptyList;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final ApplicationUserRepository userRepository;
+    private final UserRepository userRepository;
 
     /**
      * Finds User in the DB by Login and loads User in the session
@@ -26,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        ApplicationUser applicationUser = userRepository.findByEmail(email).orElseThrow(() ->new UsernameNotFoundException("User not found! " +
-                "Email : " + email)) ;
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found! " +
+                "Email : " + email));
 
-        return new User(applicationUser.getEmail(),applicationUser.getPassword(), emptyList());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), emptyList());
 
     }
 }

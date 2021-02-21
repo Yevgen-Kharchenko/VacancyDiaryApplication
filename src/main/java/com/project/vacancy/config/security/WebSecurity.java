@@ -1,7 +1,7 @@
 package com.project.vacancy.config.security;
 
 import com.project.vacancy.service.impl.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,16 +18,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import static com.project.vacancy.config.security.SecurityConstants.SIGN_UP_URL;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    private UserDetailsServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/v2/api-docs/**", "/csrf/**","/h2-console/**","/swagger-ui.html","/webjars/**", "/swagger-resources/**")
+                .antMatchers("/v2/api-docs/**", "/csrf/**",
+                        "/h2-console/**", "/swagger-ui.html",
+                        "/webjars/**", "/swagger-resources/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
